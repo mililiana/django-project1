@@ -1,0 +1,72 @@
+{% block content %}
+<h1>Create an account</h1>
+<p>Please, sign up using the following form:</p>
+
+<form method="post" action="{% url 'register' %}" id="registration-form">
+    {% csrf_token %}
+    {{ user_form.as_p }}
+    <p><input type="submit" value="Create my account"></p>
+</form>
+
+<div id="registration-messages"></div>
+
+{% endblock %}
+<style>
+    input[type="text"][style="border-color: red"],
+    input[type="password"][style="border-color: red"] {
+        border-color: red;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).on('submit', '#registration-form', function(e){
+        e.preventDefault();
+
+        // Скидуємо стилі перед перевіркою
+        $('#registration-form input').css('border-color', '');
+
+        var formValid = true;
+        $('#registration-form input[type="text"], #registration-form input[type="password"]').each(function() {
+            if ($(this).val() === '') {
+                formValid = false;
+                $(this).css('border-color', 'red'); // Підсвічуємо порожні поля червоним
+                console.log('Field is empty:', $(this).attr('name')); // Виводимо в консоль ім'я порожнього поля
+            } else {
+                $(this).css('border-color', ''); // Знімаємо підсвічування, якщо поле заповнене
+            }
+        });
+
+        if (!formValid) {
+            $('#registration-messages').text('Please fill out all required fields.').css('color', 'red');
+            console.log('Form validation failed.');
+            return;
+        }
+
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function(data) {
+                if (data.success) {
+                    alert('Registration failed!');
+                } else {
+                    alert('Registration successful!');
+                    $('#registration-form')[0].reset();
+                    $('#registration-messages').text('');
+                    $('#content').html(data);
+                }
+            },
+            error: function(xhr, status, error) {
+                if (xhr.responseJSON && xhr.responseJSON.email) {
+                    alert(xhr.responseJSON.email);
+                } else {
+                    alert('Error occurred. Please try again.');
+                }
+            }
+        });
+    });
+</script>
+

@@ -1,0 +1,282 @@
+
+openapi: 3.0.3
+
+info:
+  title: Swagger Clothing Shop - OpenAPI 3.0
+  description: This is a Clothing Shop Server based on the OpenAPI 3.0 specification.
+  version: 1.0.0
+  contact:
+    email: liliana.mirchuk.shi.2022@lpnu.ua
+    name: Liliana Mirchuk
+
+tags:
+- name: item
+  description: Everything about an item
+- name: order
+  description: Access to Clothing Shop orders
+- name: user
+  description: Operations about the user
+
+paths:
+
+  /item/{item_id}:
+    get:
+      tags:
+      - item
+      summary: "To fetch details of an item"
+      parameters:
+        - name: item_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Item details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/item"
+    put:
+      tags:
+      - item
+      summary: "To update an existing item"
+      parameters:
+        - name: item_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      requestBody:
+        description: Updated item information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/item"
+      responses:
+        '200':
+          description: Item updated successfully
+    delete:
+      tags:
+      - item
+      summary: "To delete an item"
+      parameters:
+        - name: item_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Item deleted successfully
+
+  /item:
+    post:
+      tags:
+      - item
+      summary: "To create an item"
+      requestBody:
+        description: Structure of an item
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/item"
+      responses:
+        "200":
+          description: Item created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/item"
+
+  /order/{order_id}:
+    get:
+      tags:
+      - order
+      summary: "To fetch details of an order"
+      parameters:
+        - name: order_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Order details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+    delete:
+      tags:
+      - order
+      summary: "To delete an order"
+      parameters:
+        - name: order_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Item deleted successfully
+
+  /order:
+    post:
+      tags:
+      - order
+      summary: "To create an order"
+      requestBody:
+        description: Structure of an order
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/order"
+      responses:
+        "200":
+          description: Order created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/order"
+
+  /user/{user_id}:
+    get:
+      tags:
+      - user
+      summary: "To fetch details of an user"
+      parameters:
+        - name: user_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: User details retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+    put:
+      tags:
+      - user
+      summary: "To update a user by ID"
+      parameters:
+        - name: user_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      requestBody:
+        description: Updated user information
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        '200':
+          description: User updated successfully
+        '404':
+          description: User not found
+    delete:
+      tags:
+      - user
+      summary: "To delete a user by ID"
+      parameters:
+        - name: user_id
+          required: true
+          in: path
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: User deleted successfully
+        '404':
+          description: User not found
+
+  /user:
+    post:
+      tags:
+      - user
+      summary: "To create a user"
+      requestBody:
+        description: Structure of a user
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/user"
+      responses:
+        "200":
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+
+components:
+  schemas:
+    item:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+          format: float
+        image:
+          type: string
+      xml:
+        name: "item"
+    order:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        userId:
+          type: integer
+          format: int64
+        itemIds:
+          type: array
+          items:
+            type: integer
+          xml:
+            wrapped: true
+      xml:
+        name: "order"
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        username:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+        phone:
+          type: string
+        userStatus:
+          type: integer
+          format: int32
+          description: "User Status"
+      xml:
+        name: "user"
