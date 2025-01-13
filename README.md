@@ -1,7 +1,14 @@
 # My first django Project: Online shop
 
-## Опис проєкту
-Цей проект створений на основі Django — популярного фреймворку для розробки веб-додатків на Python. Проект включає функціональність [короткий опис основної функціональності проєкту, наприклад, "блог", "система управління користувачами", "інтернет-магазин" тощо].
+## Project description
+This project is based on Django, a popular framework for developing web applications in Python. The project implements the functionality of an online clothing store, including the following features: 
+
+- Viewing the product catalog
+- Search and filtering system by categories, sizes, brands
+- Adding products to the cart
+- Placing orders
+- Registration and authorization of users
+- Admin panel for managing products, orders, and users.
 
 ## Features
 - User authentication and registration
